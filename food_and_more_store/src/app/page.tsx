@@ -8,9 +8,21 @@ const topProducts = [
 ];
 
 const categories = [
-  { id: "fruits", title: "Fruits" },
-  { id: "vegetables", title: "Vegetables & Mushrooms" },
-  { id: "proteins", title: "Proteins" },
+  {
+    id: "fruits",
+    title: "Fruits",
+    items: ["Dragonfruit", "Starfruit", "Blackberries"],
+  },
+  {
+    id: "vegetables",
+    title: "Vegetables & Mushrooms",
+    items: ["Carrots", "Leeks", "Matsutake Mushrooms"],
+  },
+  {
+    id: "proteins",
+    title: "Proteins",
+    items: ["Chicken Breast", "Salmon Fillet", "Tofu"],
+  },
 ];
 
 function ImagePlaceholder({ label }: { label: string }) {
@@ -43,14 +55,19 @@ export default function Home() {
 
       <section>
         <h2>Shop by Category</h2>
-        <div className="categories">
-          {categories.map((category) => (
-            <div className="categoryCard" key={category.id}>
-              <ImagePlaceholder label={category.title} />
-              <span className="categoryTitle">{category.title}</span>
+        {categories.map((category) => (
+          <div className="categorySection" key={category.id}>
+            <h3>{category.title}</h3>
+            <div className="categoryItems">
+              {category.items.map((item) => (
+                <div className="productCard" key={item}>
+                  <ImagePlaceholder label={item} />
+                  <span className="productTitle">{item}</span>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </section>
     </div>
   );

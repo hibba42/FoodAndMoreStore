@@ -12,20 +12,29 @@
 }
 
 .topProducts,
-.categories {
+.categoryItems {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
   font-size: larger;
 }
 
-.productCard,
-.categoryCard {
+.productCard {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
   width: 140px;
+}
+
+.categorySection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.categorySection + .categorySection {
+  margin-top: 24px;
 }
 
 .imagePlaceholder {
@@ -42,8 +51,7 @@
   padding: 8px;
 }
 
-.productTitle,
-.categoryTitle {
+.productTitle {
   font-weight: 500;
   text-align: center;
 }
