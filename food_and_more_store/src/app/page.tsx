@@ -1,5 +1,8 @@
 import "./home.css";
 
+// Items sections -- For display and testing purposes, these are filled with static values.
+// In the future, they should pull items for each category from our database.
+
 const topProducts = [
   { id: 1, title: "Organic Apples" },
   { id: 2, title: "Whole Wheat Bread" },
