@@ -17,8 +17,8 @@ services:
       retries: 10
     # No "ports:" on purpose: only the web container can reach the database.
     # For local debugging with psql/pgAdmin, uncomment (localhost only):
-    # ports:
-    #   - "127.0.0.1:5432:5432"
+    ports:
+      - "127.0.0.1:5432:5432"
 
   web:
     build: .

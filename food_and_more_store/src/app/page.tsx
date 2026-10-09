@@ -1,33 +1,14 @@
 import "./home.css";
+import { getProductsByCategory, getTopProducts } from "@/lib/db/products";
 
-// Items sections -- For display and testing purposes, these are filled with static values.
-// In the future, they should pull items for each category from our database.
+// This page reads from the database, so render it on each request.
+// (Without this, `next build` inside Docker would try to query a database
+// that isn't reachable during the image build.)
+export const dynamic = "force-dynamic";
 
-const topProducts = [
-  { id: 1, title: "Organic Apples" },
-  { id: 2, title: "Whole Wheat Bread" },
-  { id: 3, title: "Free-Range Eggs" },
-  { id: 4, title: "Cheddar Cheese" },
-];
-
-const categories = [
-  {
-    id: "fruits",
-    title: "Fruits",
-    items: ["Dragonfruit", "Starfruit", "Blackberries"],
-  },
-  {
-    id: "vegetables",
-    title: "Vegetables & Mushrooms",
-    items: ["Carrots", "Leeks", "Matsutake Mushrooms"],
-  },
-  {
-    id: "proteins",
-    title: "Proteins",
-    items: ["Chicken Breast", "Salmon Fillet", "Tofu"],
-  },
-];
-
+// The database stores image paths like "/images/tomato.jpg", but the image
+// files don't exist yet, so we still show the placeholder for now.
+// Once real images are in public/images/, swap this for <Image src={...} />.
 function ImagePlaceholder({ label }: { label: string }) {
   return (
     <div className="imagePlaceholder" role="img" aria-label={label}>
@@ -36,7 +17,12 @@ function ImagePlaceholder({ label }: { label: string }) {
   );
 }
 
-export default function Home() {
+export default async function Home() {
+  const [topProducts, categories] = await Promise.all([
+    getTopProducts(4),
+    getProductsByCategory(),
+  ]);
+
   return (
     <div className="homeMain">
       <section className="greeting">
@@ -49,8 +35,9 @@ export default function Home() {
         <div className="topProducts">
           {topProducts.map((product) => (
             <div className="productCard" key={product.id}>
-              <ImagePlaceholder label={product.title} />
-              <span className="productTitle">{product.title}</span>
+              <ImagePlaceholder label={product.name} />
+              <span className="productTitle">{product.name}</span>
+              <span className="productPrice">${product.price}</span>
             </div>
           ))}
         </div>
@@ -63,9 +50,10 @@ export default function Home() {
             <h3>{category.title}</h3>
             <div className="categoryItems">
               {category.items.map((item) => (
-                <div className="productCard" key={item}>
-                  <ImagePlaceholder label={item} />
-                  <span className="productTitle">{item}</span>
+                <div className="productCard" key={item.id}>
+                  <ImagePlaceholder label={item.name} />
+                  <span className="productTitle">{item.name}</span>
+                  <span className="productPrice">${item.price}</span>
                 </div>
               ))}
             </div>
