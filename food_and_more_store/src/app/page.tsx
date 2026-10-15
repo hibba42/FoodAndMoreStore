@@ -1,20 +1,23 @@
 import "./home.css";
 import { getProductsByCategory, getTopProducts } from "@/lib/db/products";
+import Image from 'next/image';
 
 // This page reads from the database, so render it on each request.
 // (Without this, `next build` inside Docker would try to query a database
 // that isn't reachable during the image build.)
 export const dynamic = "force-dynamic";
 
-// The database stores image paths like "/images/tomato.jpg", but the image
-// files don't exist yet, so we still show the placeholder for now.
-// Once real images are in public/images/, swap this for <Image src={...} />.
-function ImagePlaceholder({ label }: { label: string }) {
-  return (
-    <div className="imagePlaceholder" role="img" aria-label={label}>
-      <span>{label}</span>
-    </div>
-  );
+// The database stores image paths like "/images/tomato.jpg". If the file doesn't exist,
+// gracefully show a placeholder instead.
+function ProductImage({ src, alt }: { src: string | null; alt: string }) {
+  if (!src) {
+    return (
+      <div className="imagePlaceholder" role="img" aria-label={alt}>
+        <span>{alt}</span>
+      </div>
+    );
+  }
+  return <Image src={src} alt={alt} width={120} height={120} className="productImage" />;
 }
 
 export default async function Home() {
@@ -33,11 +36,11 @@ export default async function Home() {
       <section>
         <h2>Top Products!</h2>
         <div className="topProducts">
-          {topProducts.map((product) => (
-            <div className="productCard" key={product.id}>
-              <ImagePlaceholder label={product.name} />
-              <span className="productTitle">{product.name}</span>
-              <span className="productPrice">${product.price}</span>
+          {topProducts.map((item) => (
+            <div className="productCard" key={item.id}>
+              <ProductImage src={item.imagePath} alt={item.name} />
+              <span className="productTitle">{item.name}</span>
+              <span className="productPrice">${item.price}</span>
             </div>
           ))}
         </div>
@@ -51,7 +54,7 @@ export default async function Home() {
             <div className="categoryItems">
               {category.items.map((item) => (
                 <div className="productCard" key={item.id}>
-                  <ImagePlaceholder label={item.name} />
+                  <ProductImage src={item.imagePath} alt={item.name} />
                   <span className="productTitle">{item.name}</span>
                   <span className="productPrice">${item.price}</span>
                 </div>
