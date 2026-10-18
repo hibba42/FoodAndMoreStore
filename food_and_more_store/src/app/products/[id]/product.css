@@ -159,3 +159,13 @@
     font-size: 1.6rem;
   }
 }
+
+.addButton:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.cartMessage a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

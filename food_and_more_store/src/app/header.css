@@ -1,0 +1,44 @@
+.siteHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 24px 0;
+}
+
+.siteNav {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  font-weight: 600;
+}
+
+.siteNav a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.cartLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cartCount {
+  display: inline-block;
+  min-width: 22px;
+  padding: 1px 7px;
+  font-size: 12px;
+  text-align: center;
+  color: var(--background);
+  background: var(--foreground);
+  border-radius: 999px;
+}
+
+.siteNav a:focus-visible {
+  outline: 3px solid var(--foreground);
+  outline-offset: 3px;
+  border-radius: 4px;
+}

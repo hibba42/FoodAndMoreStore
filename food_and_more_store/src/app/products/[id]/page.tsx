@@ -70,7 +70,7 @@ export default async function ProductPage(props: Props) {
             <p className="ageNotice">You must be 21 or older to buy this item.</p>
           )}
 
-          <AddToCart productName={product.name} price={product.price} />
+          <AddToCart productId={product.id} productName={product.name} price={product.price} />
         </div>
       </div>
     </div>

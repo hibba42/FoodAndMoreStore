@@ -1,29 +1,48 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
+import { useState, useTransition } from "react";
+import { addToCart } from "@/lib/cart-actions";
+import { MAX_QTY, MIN_QTY } from "@/lib/cart-limits";
 import { formatPrice, lineTotal } from "@/lib/format";
 
-const MIN = 1;
-const MAX = 99;
-
 type Props = {
+  productId: number;
   productName: string;
   price: string;
 };
 
-// Placeholder UI: the quantity controls work, but "Add to cart" doesn't
-// talk to a backend yet. Later this will call a Server Action.
-export default function AddToCart({ productName, price }: Props) {
+type Feedback = { kind: "success" | "error"; text: string } | null;
+
+export default function AddToCart({ productId, productName, price }: Props) {
   // Keep the raw text so the field can be cleared while typing.
   const [text, setText] = useState("1");
-  const [message, setMessage] = useState("");
+  const [feedback, setFeedback] = useState<Feedback>(null);
+  const [pending, startTransition] = useTransition();
 
   const parsed = parseInt(text, 10);
-  const quantity = Number.isNaN(parsed) ? MIN : Math.min(MAX, Math.max(MIN, parsed));
+  const quantity = Number.isNaN(parsed)
+    ? MIN_QTY
+    : Math.min(MAX_QTY, Math.max(MIN_QTY, parsed));
 
   function setQuantity(next: number) {
-    setText(String(Math.min(MAX, Math.max(MIN, next))));
-    setMessage("");
+    setText(String(Math.min(MAX_QTY, Math.max(MIN_QTY, next))));
+    setFeedback(null);
+  }
+
+  function handleAdd() {
+    startTransition(async () => {
+      const result = await addToCart(productId, quantity);
+      if (result.ok) {
+        setFeedback({
+          kind: "success",
+          text: `Added ${quantity} × ${productName}. You now have ${result.lineQuantity} in your cart.`,
+        });
+        setText("1");
+      } else {
+        setFeedback({ kind: "error", text: result.error });
+      }
+    });
   }
 
   return (
@@ -34,7 +53,7 @@ export default function AddToCart({ productName, price }: Props) {
           <button
             type="button"
             onClick={() => setQuantity(quantity - 1)}
-            disabled={quantity <= MIN}
+            disabled={quantity <= MIN_QTY}
             aria-label="Decrease quantity"
           >
             −
@@ -43,19 +62,19 @@ export default function AddToCart({ productName, price }: Props) {
             id="quantity"
             type="number"
             inputMode="numeric"
-            min={MIN}
-            max={MAX}
+            min={MIN_QTY}
+            max={MAX_QTY}
             value={text}
             onChange={(e) => {
               setText(e.target.value);
-              setMessage("");
+              setFeedback(null);
             }}
             onBlur={() => setText(String(quantity))}
           />
           <button
             type="button"
             onClick={() => setQuantity(quantity + 1)}
-            disabled={quantity >= MAX}
+            disabled={quantity >= MAX_QTY}
             aria-label="Increase quantity"
           >
             +
@@ -65,20 +84,22 @@ export default function AddToCart({ productName, price }: Props) {
 
       <p className="lineTotal">Total: {formatPrice(lineTotal(price, quantity))}</p>
 
-      <button
-        type="button"
-        className="addButton"
-        onClick={() =>
-          setMessage(
-            `${quantity} × ${productName} would be added to your cart. (Demo only: the cart isn't connected yet.)`
-          )
-        }
-      >
-        Add to cart
+      <button type="button" className="addButton" onClick={handleAdd} disabled={pending}>
+        {pending ? "Adding…" : "Add to cart"}
       </button>
 
       <p className="cartMessage" role="status">
-        {message}
+        {feedback && (
+          <>
+            {feedback.text}
+            {feedback.kind === "success" && (
+              <>
+                {" "}
+                <Link href="/cart">View cart</Link>
+              </>
+            )}
+          </>
+        )}
       </p>
     </div>
   );

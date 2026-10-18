@@ -1,0 +1,175 @@
+/* Cart page. Uses the site's --background / --foreground colors. */
+
+.cartPage {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 32px 24px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.cartPage h2 {
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+.cartLinkText {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.cartNotice {
+  border-left: 4px solid currentColor;
+  padding: 8px 12px;
+  font-size: 14px;
+  max-width: 60ch;
+}
+
+.cartList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.cartLine {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr) auto 90px;
+  gap: 20px;
+  align-items: center;
+  padding: 16px 0;
+  border-top: 1px solid color-mix(in srgb, var(--foreground) 25%, transparent);
+}
+
+.cartLine:last-child {
+  border-bottom: 1px solid color-mix(in srgb, var(--foreground) 25%, transparent);
+}
+
+.cartLineImage {
+  display: flex;
+}
+
+.cartLineInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cartLineName {
+  font-weight: 600;
+  font-size: 1.1rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.cartLineControls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.cartQuantity {
+  display: inline-flex;
+  align-items: center;
+  border: 2px solid var(--foreground);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.cartQuantity button {
+  width: 40px;
+  height: 36px;
+  font: inherit;
+  font-size: 20px;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.cartQuantity button:disabled,
+.removeButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.cartQuantityValue {
+  min-width: 40px;
+  text-align: center;
+  font-size: 17px;
+}
+
+.removeButton {
+  font: inherit;
+  font-size: 14px;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  padding: 2px 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.cartLineTotal {
+  font-weight: 700;
+  text-align: right;
+}
+
+.cartSummary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.cartSubtotal {
+  font-size: 1.25rem;
+}
+
+.checkoutButton {
+  font: inherit;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 14px 28px;
+  color: var(--background);
+  background: var(--foreground);
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.checkoutButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cartPage a:focus-visible,
+.cartPage button:focus-visible {
+  outline: 3px solid var(--foreground);
+  outline-offset: 2px;
+}
+
+@media (max-width: 720px) {
+  .cartLine {
+    grid-template-columns: 80px minmax(0, 1fr);
+    gap: 12px 16px;
+  }
+
+  .cartLineControls {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .cartLineTotal {
+    grid-column: 1 / -1;
+    text-align: left;
+  }
+
+  .cartSummary {
+    align-items: stretch;
+  }
+}

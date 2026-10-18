@@ -1,4 +1,4 @@
-import { and, asc, eq } from "drizzle-orm";
+import { and, asc, eq, inArray } from "drizzle-orm";
 import { cache } from "react";
 import { db } from "./index";
 import { categories, products } from "./schema";
@@ -40,6 +40,17 @@ export const getProductById = cache(async (id: number): Promise<ProductSummary |
     .limit(1);
   return rows[0] ?? null;
 });
+
+// Several active products at once (used by the cart and, later, checkout).
+// IDs that don't exist or are inactive are simply missing from the result.
+export async function getProductsByIds(ids: number[]): Promise<ProductSummary[]> {
+  if (ids.length === 0) return [];
+  return db
+    .select(productFields)
+    .from(products)
+    .innerJoin(categories, eq(products.categoryId, categories.categoryId))
+    .where(and(inArray(products.productId, ids), eq(products.isActive, true)));
+}
 
 // Products grouped by category, in category order, for "Shop by Category".
 export async function getProductsByCategory() {
