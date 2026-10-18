@@ -7,6 +7,9 @@ import ProductImage from "../../product-image";
 import AddToCart from "./add-to-cart";
 import "./product.css";
 
+type Props = { params: Promise<{ id: string }> };
+
+
 // Reads from the database, so render on each request (not at build time).
 export const dynamic = "force-dynamic";
 
@@ -20,7 +23,7 @@ function parseId(raw: string): number | null {
 }
 
 export async function generateMetadata(
-  props: PageProps<"/products/[id]">
+  props: Props
 ): Promise<Metadata> {
   const { id: rawId } = await props.params;
   const id = parseId(rawId);
@@ -33,7 +36,7 @@ export async function generateMetadata(
   };
 }
 
-export default async function ProductPage(props: PageProps<"/products/[id]">) {
+export default async function ProductPage(props: Props) {
   const { id: rawId } = await props.params;
   const id = parseId(rawId);
   if (id === null) notFound();
