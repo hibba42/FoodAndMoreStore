@@ -1,22 +1,26 @@
-import { asc, eq } from "drizzle-orm";
+import { and, asc, eq } from "drizzle-orm";
+import { cache } from "react";
 import { db } from "./index";
 import { categories, products } from "./schema";
 
-// All active products, each with its category name.
+// The columns every product query returns.
 // Note: price is a string (e.g. "2.49") because Postgres NUMERIC is
 // returned as text to avoid floating-point rounding.
+const productFields = {
+  id: products.productId,
+  name: products.name,
+  description: products.description,
+  price: products.price,
+  imagePath: products.imagePath,
+  isAgeRestricted: products.isAgeRestricted,
+  categoryId: categories.categoryId,
+  categoryName: categories.name,
+};
+
+// All active products, each with its category name.
 export async function getActiveProducts() {
   return db
-    .select({
-      id: products.productId,
-      name: products.name,
-      description: products.description,
-      price: products.price,
-      imagePath: products.imagePath,
-      isAgeRestricted: products.isAgeRestricted,
-      categoryId: categories.categoryId,
-      categoryName: categories.name,
-    })
+    .select(productFields)
     .from(products)
     .innerJoin(categories, eq(products.categoryId, categories.categoryId))
     .where(eq(products.isActive, true))
@@ -24,6 +28,18 @@ export async function getActiveProducts() {
 }
 
 export type ProductSummary = Awaited<ReturnType<typeof getActiveProducts>>[number];
+
+// One active product by its ID, or null if it doesn't exist or is inactive.
+// Wrapped in cache() so generateMetadata and the page share a single query.
+export const getProductById = cache(async (id: number): Promise<ProductSummary | null> => {
+  const rows = await db
+    .select(productFields)
+    .from(products)
+    .innerJoin(categories, eq(products.categoryId, categories.categoryId))
+    .where(and(eq(products.productId, id), eq(products.isActive, true)))
+    .limit(1);
+  return rows[0] ?? null;
+});
 
 // Products grouped by category, in category order, for "Shop by Category".
 export async function getProductsByCategory() {

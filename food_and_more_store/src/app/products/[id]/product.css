@@ -1,0 +1,161 @@
+/* Product detail page. Uses the site's --background / --foreground colors,
+   so it follows light and dark mode automatically. */
+
+.productPage {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 32px 24px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.breadcrumb {
+  font-size: 14px;
+}
+
+.breadcrumb a,
+.backLink {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.productDetail {
+  display: grid;
+  grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+  gap: 40px;
+  align-items: start;
+}
+
+.productDetailImage {
+  display: flex;
+}
+
+.productDetailInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.productDetailInfo h2 {
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+.productDetailPrice {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.productDescription {
+  line-height: 1.6;
+  max-width: 60ch;
+}
+
+.ageNotice {
+  border-left: 4px solid currentColor;
+  padding: 8px 12px;
+  font-size: 14px;
+  max-width: 60ch;
+}
+
+.addToCart {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.quantityRow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.quantityRow label {
+  font-weight: 600;
+}
+
+.quantityControl {
+  display: inline-flex;
+  border: 2px solid var(--foreground);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.quantityControl button {
+  width: 44px;
+  font: inherit;
+  font-size: 20px;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.quantityControl button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.quantityControl input {
+  width: 64px;
+  font: inherit;
+  font-size: 18px;
+  text-align: center;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  appearance: textfield;
+}
+
+.quantityControl input::-webkit-outer-spin-button,
+.quantityControl input::-webkit-inner-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+.lineTotal {
+  font-size: 1.1rem;
+}
+
+.addButton {
+  font: inherit;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 14px 28px;
+  color: var(--background);
+  background: var(--foreground);
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.addButton:hover {
+  opacity: 0.88;
+}
+
+.cartMessage {
+  min-height: 1.5em;
+  font-size: 14px;
+  max-width: 50ch;
+}
+
+.productPage a:focus-visible,
+.addToCart button:focus-visible,
+.quantityControl input:focus-visible {
+  outline: 3px solid var(--foreground);
+  outline-offset: 2px;
+}
+
+@media (max-width: 720px) {
+  .productDetail {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  .productDetailInfo h2 {
+    font-size: 1.6rem;
+  }
+}

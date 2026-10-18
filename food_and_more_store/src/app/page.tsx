@@ -1,24 +1,13 @@
+import Link from "next/link";
 import "./home.css";
+import ProductImage from "./product-image";
 import { getProductsByCategory, getTopProducts } from "@/lib/db/products";
-import Image from 'next/image';
+import { formatPrice } from "@/lib/format";
 
 // This page reads from the database, so render it on each request.
 // (Without this, `next build` inside Docker would try to query a database
 // that isn't reachable during the image build.)
 export const dynamic = "force-dynamic";
-
-// The database stores image paths like "/images/tomato.jpg". If the file doesn't exist,
-// gracefully show a placeholder instead.
-function ProductImage({ src, alt }: { src: string | null; alt: string }) {
-  if (!src) {
-    return (
-      <div className="imagePlaceholder" role="img" aria-label={alt}>
-        <span>{alt}</span>
-      </div>
-    );
-  }
-  return <Image src={src} alt={alt} width={120} height={120} className="productImage" />;
-}
 
 export default async function Home() {
   const [topProducts, categories] = await Promise.all([
@@ -36,12 +25,16 @@ export default async function Home() {
       <section>
         <h2>Top Products!</h2>
         <div className="topProducts">
-          {topProducts.map((item) => (
-            <div className="productCard" key={item.id}>
-              <ProductImage src={item.imagePath} alt={item.name} />
-              <span className="productTitle">{item.name}</span>
-              <span className="productPrice">${item.price}</span>
-            </div>
+          {topProducts.map((product) => (
+            <Link
+              className="productCard"
+              href={`/products/${product.id}`}
+              key={product.id}
+            >
+              <ProductImage src={product.imagePath} alt={product.name} />
+              <span className="productTitle">{product.name}</span>
+              <span className="productPrice">{formatPrice(product.price)}</span>
+            </Link>
           ))}
         </div>
       </section>
@@ -53,11 +46,15 @@ export default async function Home() {
             <h3>{category.title}</h3>
             <div className="categoryItems">
               {category.items.map((item) => (
-                <div className="productCard" key={item.id}>
+                <Link
+                  className="productCard"
+                  href={`/products/${item.id}`}
+                  key={item.id}
+                >
                   <ProductImage src={item.imagePath} alt={item.name} />
                   <span className="productTitle">{item.name}</span>
-                  <span className="productPrice">${item.price}</span>
-                </div>
+                  <span className="productPrice">{formatPrice(item.price)}</span>
+                </Link>
               ))}
             </div>
           </div>
