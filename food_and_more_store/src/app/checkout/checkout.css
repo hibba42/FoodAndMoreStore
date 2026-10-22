@@ -1,0 +1,175 @@
+/* Checkout page. Uses the site's --background / --foreground colors. */
+
+.checkoutPage {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 32px 24px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.checkoutPage h2 {
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+.checkoutLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 340px);
+  gap: 40px;
+  align-items: start;
+}
+
+.checkoutForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.checkoutForm h3 {
+  margin-top: 8px;
+  font-size: 1.2rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.fieldRow {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 16px;
+}
+
+.field label {
+  font-weight: 600;
+}
+
+.optional {
+  font-weight: 400;
+  opacity: 0.75;
+}
+
+.field input,
+.field select {
+  font: inherit;
+  padding: 10px 12px;
+  color: inherit;
+  background: transparent;
+  border: 2px solid var(--foreground);
+  border-radius: 8px;
+}
+
+.field select option {
+  color: initial;
+}
+
+.field [aria-invalid="true"] {
+  border-style: dashed;
+  border-width: 3px;
+}
+
+.fieldHint {
+  font-size: 14px;
+  max-width: 60ch;
+}
+
+.fieldError {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.fieldError::before {
+  content: "⚠ ";
+}
+
+.formMessage {
+  border-left: 4px solid currentColor;
+  padding: 8px 12px;
+  font-weight: 600;
+}
+
+.placeOrderButton {
+  align-self: flex-start;
+  font: inherit;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 14px 28px;
+  color: var(--background);
+  background: var(--foreground);
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.placeOrderButton:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.orderSummary {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+  border: 2px solid var(--foreground);
+  border-radius: 12px;
+}
+
+.orderSummary ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.orderSummary li {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.summaryName {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+}
+
+.summaryQty {
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.summaryTotal {
+  font-size: 1.1rem;
+  padding-top: 8px;
+  border-top: 1px solid color-mix(in srgb, var(--foreground) 30%, transparent);
+}
+
+.checkoutLink {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.checkoutPage a:focus-visible,
+.checkoutPage button:focus-visible,
+.checkoutPage input:focus-visible,
+.checkoutPage select:focus-visible {
+  outline: 3px solid var(--foreground);
+  outline-offset: 2px;
+}
+
+@media (max-width: 800px) {
+  .checkoutLayout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .orderSummary {
+    order: -1;
+  }
+}

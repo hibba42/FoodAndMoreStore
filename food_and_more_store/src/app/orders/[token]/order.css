@@ -1,0 +1,72 @@
+.orderPage {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 24px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.orderPage h2 {
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+.orderItems {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.orderItems li {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  padding: 12px 0;
+  border-top: 1px solid color-mix(in srgb, var(--foreground) 25%, transparent);
+}
+
+.orderItems li:last-child {
+  border-bottom: 1px solid color-mix(in srgb, var(--foreground) 25%, transparent);
+}
+
+.orderItemName {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+}
+
+.orderItemQty {
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.orderTotal {
+  font-size: 1.25rem;
+  text-align: right;
+}
+
+.orderDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  line-height: 1.5;
+}
+
+.orderNotice {
+  border-left: 4px solid currentColor;
+  padding: 8px 12px;
+  font-size: 14px;
+  max-width: 60ch;
+}
+
+.orderLink {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.orderPage a:focus-visible {
+  outline: 3px solid var(--foreground);
+  outline-offset: 2px;
+}
