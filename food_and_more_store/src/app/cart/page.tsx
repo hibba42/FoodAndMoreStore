@@ -99,9 +99,9 @@ export default async function CartPage() {
             birth at checkout.
           </p>
         )}
-        <button type="button" className="checkoutButton" disabled>
-          Checkout (coming soon)
-        </button>
+        <Link className="checkoutButton" href="/checkout">
+          Proceed to checkout
+        </Link>
       </div>
     </div>
   );

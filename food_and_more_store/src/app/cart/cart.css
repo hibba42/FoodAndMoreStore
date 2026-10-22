@@ -129,6 +129,9 @@
 }
 
 .checkoutButton {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
   font: inherit;
   font-weight: 600;
   font-size: 16px;

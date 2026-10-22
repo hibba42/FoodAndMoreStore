@@ -44,16 +44,21 @@ CREATE INDEX idx_products_category ON products(category_id);
 
 -- ---------------------------------------------------------------
 -- orders (one row per order: the "receipt header")
--- order_address is a snapshot of the shipping address at checkout,
--- so later changes to the customer's address don't alter past orders.
+-- order_address, recipient_name and contact_* are snapshots taken at checkout,
+-- so later changes to a customer's saved details don't alter past orders.
+-- public_token is the unguessable ID used in the order confirmation URL.
 -- ---------------------------------------------------------------
 CREATE TABLE orders (
-  order_id       INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  customer_id    INTEGER NOT NULL REFERENCES customers(customer_id),
-  ordered_at     TIMESTAMPTZ NOT NULL DEFAULT now(),
-  status         VARCHAR(20) NOT NULL DEFAULT 'pending'
-                 CHECK (status IN ('pending', 'paid', 'shipped', 'delivered', 'cancelled')),
-  order_address  VARCHAR(255) NOT NULL
+  order_id         INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  public_token     UUID NOT NULL DEFAULT gen_random_uuid() UNIQUE,
+  customer_id      INTEGER NOT NULL REFERENCES customers(customer_id),
+  ordered_at       TIMESTAMPTZ NOT NULL DEFAULT now(),
+  status           VARCHAR(20) NOT NULL DEFAULT 'pending'
+                   CHECK (status IN ('pending', 'paid', 'shipped', 'delivered', 'cancelled')),
+  recipient_name   VARCHAR(100) NOT NULL,
+  contact_email    VARCHAR(100) NOT NULL,
+  contact_phone    VARCHAR(15),
+  order_address    VARCHAR(255) NOT NULL
 );
 
 CREATE INDEX idx_orders_customer ON orders(customer_id);

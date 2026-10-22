@@ -1,4 +1,4 @@
-import { pgTable, unique, integer, varchar, index, foreignKey, check, text, numeric, boolean, char, date, timestamp } from "drizzle-orm/pg-core"
+import { pgTable, unique, integer, varchar, index, foreignKey, check, text, numeric, boolean, char, date, uuid, timestamp } from "drizzle-orm/pg-core"
 import { sql } from "drizzle-orm"
 
 
@@ -46,9 +46,13 @@ export const customers = pgTable("customers", {
 
 export const orders = pgTable("orders", {
 	orderId: integer("order_id").primaryKey().generatedAlwaysAsIdentity({ name: "orders_order_id_seq", startWith: 1, increment: 1, minValue: 1, maxValue: 2147483647, cache: 1 }),
+	publicToken: uuid("public_token").defaultRandom().notNull(),
 	customerId: integer("customer_id").notNull(),
 	orderedAt: timestamp("ordered_at", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
 	status: varchar({ length: 20 }).default('pending').notNull(),
+	recipientName: varchar("recipient_name", { length: 100 }).notNull(),
+	contactEmail: varchar("contact_email", { length: 100 }).notNull(),
+	contactPhone: varchar("contact_phone", { length: 15 }),
 	orderAddress: varchar("order_address", { length: 255 }).notNull(),
 }, (table) => [
 	index("idx_orders_customer").using("btree", table.customerId.asc().nullsLast().op("int4_ops")),
@@ -57,6 +61,7 @@ export const orders = pgTable("orders", {
 			foreignColumns: [customers.customerId],
 			name: "orders_customer_id_fkey"
 		}),
+	unique("orders_public_token_key").on(table.publicToken),
 	check("orders_status_check", sql`(status)::text = ANY ((ARRAY['pending'::character varying, 'paid'::character varying, 'shipped'::character varying, 'delivered'::character varying, 'cancelled'::character varying])::text[])`),
 ]);
 
