@@ -29,8 +29,10 @@ services:
     environment:
       # "db" resolves to the database container on the compose network
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
-      # Uncomment the below line if using HTTPS (and NOT using HTTP).  Local testing (I.e, http://localhost:3000 ) will break if the following is uncommented.
-      # COOKIE_SECURE: "true"
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?Set BETTER_AUTH_SECRET in .env}
+      BETTER_AUTH_URL: ${BETTER_AUTH_URL:-http://localhost:3000}
+      BETTER_AUTH_TRUSTED_ORIGINS: ${BETTER_AUTH_TRUSTED_ORIGINS:-}
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
     ports:
       - "3000:3000"
 

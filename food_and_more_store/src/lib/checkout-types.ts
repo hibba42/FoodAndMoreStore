@@ -19,6 +19,27 @@ export type CheckoutState = {
   values: CheckoutValues; // what to show in the form (kept after errors)
   fieldErrors: Partial<Record<FieldName, string>>;
   message: string | null; // form-level message
+  saveDetails: boolean; // "save these details to my account" (signed-in only)
+};
+
+// The account page edits the same fields except email (which belongs to the account).
+export const PROFILE_FIELD_NAMES = [
+  "name",
+  "phone",
+  "address",
+  "city",
+  "state",
+  "zip",
+  "dateOfBirth",
+] as const;
+
+export type ProfileValues = Record<(typeof PROFILE_FIELD_NAMES)[number], string>;
+
+export type AccountState = {
+  values: ProfileValues;
+  fieldErrors: Partial<Record<FieldName, string>>;
+  message: string | null;
+  saved: boolean;
 };
 
 export const EMPTY_VALUES: CheckoutValues = {

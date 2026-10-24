@@ -1,5 +1,33 @@
 import { relations } from "drizzle-orm/relations";
-import { categories, products, customers, orders, orderItems } from "./schema";
+import { user, session, account, customers, categories, products, orders, orderItems } from "./schema";
+
+export const sessionRelations = relations(session, ({one}) => ({
+	user: one(user, {
+		fields: [session.userId],
+		references: [user.id]
+	}),
+}));
+
+export const userRelations = relations(user, ({many}) => ({
+	sessions: many(session),
+	accounts: many(account),
+	customers: many(customers),
+}));
+
+export const accountRelations = relations(account, ({one}) => ({
+	user: one(user, {
+		fields: [account.userId],
+		references: [user.id]
+	}),
+}));
+
+export const customersRelations = relations(customers, ({one, many}) => ({
+	user: one(user, {
+		fields: [customers.authUserId],
+		references: [user.id]
+	}),
+	orders: many(orders),
+}));
 
 export const productsRelations = relations(products, ({one, many}) => ({
 	category: one(categories, {
@@ -19,10 +47,6 @@ export const ordersRelations = relations(orders, ({one, many}) => ({
 		references: [customers.customerId]
 	}),
 	orderItems: many(orderItems),
-}));
-
-export const customersRelations = relations(customers, ({many}) => ({
-	orders: many(orders),
 }));
 
 export const orderItemsRelations = relations(orderItems, ({one}) => ({

@@ -42,3 +42,30 @@
   outline-offset: 3px;
   border-radius: 4px;
 }
+
+.siteNav {
+  align-items: center;
+}
+
+.linkButton {
+  font: inherit;
+  font-weight: 600;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+
+.linkButton:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.linkButton:focus-visible {
+  outline: 3px solid var(--foreground);
+  outline-offset: 3px;
+  border-radius: 4px;
+}

@@ -12,9 +12,17 @@ CREATE TABLE customers (
   state          CHAR(2),
   zip            VARCHAR(10),
   date_of_birth  DATE CHECK (date_of_birth <= CURRENT_DATE),
-  email          VARCHAR(100) NOT NULL UNIQUE,
-  phone          VARCHAR(15)
+  email          VARCHAR(100) NOT NULL,
+  phone          VARCHAR(15),
+  -- Set for customers who have an account; NULL for guest checkouts.
+  -- Deleting an account keeps the customer row (and so the order history).
+  auth_user_id   TEXT UNIQUE REFERENCES "user"(id) ON DELETE SET NULL
 );
+
+-- Email is unique only among GUEST customers. A member's row may share an
+-- email with a guest row, because without email verification we can't safely
+-- merge them. (A guest typing someone else's email never touches a member row.)
+CREATE UNIQUE INDEX customers_guest_email_key ON customers (email) WHERE auth_user_id IS NULL;
 
 -- ---------------------------------------------------------------
 -- categories

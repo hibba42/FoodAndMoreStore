@@ -1,0 +1,101 @@
+/* Shared form styles: checkout, account, sign-in, sign-up.
+   Uses the site's --background / --foreground colors. */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.fieldRow {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 16px;
+}
+
+.field label {
+  font-weight: 600;
+}
+
+.optional {
+  font-weight: 400;
+  opacity: 0.75;
+}
+
+.field input:not([type="checkbox"]),
+.field select {
+  font: inherit;
+  padding: 10px 12px;
+  color: inherit;
+  background: transparent;
+  border: 2px solid var(--foreground);
+  border-radius: 8px;
+}
+
+.field select option {
+  color: initial;
+}
+
+.field [aria-invalid="true"] {
+  border-style: dashed;
+  border-width: 3px;
+}
+
+.fieldHint {
+  font-size: 14px;
+  max-width: 60ch;
+}
+
+.fieldError {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.fieldError::before {
+  content: "⚠ ";
+}
+
+.formMessage {
+  border-left: 4px solid currentColor;
+  padding: 8px 12px;
+  font-weight: 600;
+}
+
+.checkboxField {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkboxField input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--foreground);
+}
+
+.formButton {
+  align-self: flex-start;
+  font: inherit;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 14px 28px;
+  color: var(--background);
+  background: var(--foreground);
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.formButton:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.field input:focus-visible,
+.field select:focus-visible,
+.checkboxField input:focus-visible,
+.formButton:focus-visible {
+  outline: 3px solid var(--foreground);
+  outline-offset: 2px;
+}

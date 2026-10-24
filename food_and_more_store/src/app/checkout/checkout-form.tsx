@@ -2,81 +2,22 @@
 
 import { useActionState } from "react";
 import { placeOrder } from "@/lib/checkout-actions";
-import {
-  US_STATES,
-  type CheckoutState,
-  type CheckoutValues,
-  type FieldName,
-} from "@/lib/checkout-types";
+import { type CheckoutState, type CheckoutValues } from "@/lib/checkout-types";
+import { Field, StateSelect } from "../form-field";
 
 type Props = {
-  defaults: CheckoutValues; // blank for guests; saved details for signed-in members later
+  defaults: CheckoutValues; // blank for guests; saved details for signed-in members
   requiresBirthDate: boolean;
+  signedIn: boolean;
 };
 
-type FieldProps = {
-  name: FieldName;
-  label: string;
-  defaultValue: string;
-  error?: string;
-  type?: string;
-  autoComplete?: string;
-  inputMode?: "text" | "tel" | "email" | "numeric";
-  maxLength?: number;
-  required?: boolean;
-  hint?: string;
-};
-
-function Field({
-  name,
-  label,
-  defaultValue,
-  error,
-  type = "text",
-  autoComplete,
-  inputMode,
-  maxLength,
-  required = false,
-  hint,
-}: FieldProps) {
-  const hintId = `${name}-hint`;
-  const errorId = `${name}-error`;
-  const describedBy = [hint ? hintId : null, error ? errorId : null].filter(Boolean).join(" ");
-
-  return (
-    <div className="field">
-      <label htmlFor={name}>
-        {label}
-        {!required && <span className="optional"> (optional)</span>}
-      </label>
-      <input
-        id={name}
-        name={name}
-        type={type}
-        defaultValue={defaultValue}
-        autoComplete={autoComplete}
-        inputMode={inputMode}
-        maxLength={maxLength}
-        required={required}
-        aria-invalid={error ? true : undefined}
-        aria-describedby={describedBy || undefined}
-      />
-      {hint && (
-        <p className="fieldHint" id={hintId}>
-          {hint}
-        </p>
-      )}
-      {error && (
-        <p className="fieldError" id={errorId}>
-          {error}
-        </p>
-      )}
-    </div>
-  );
-}
-
-export default function CheckoutForm({ defaults, requiresBirthDate }: Props) {
-  const initialState: CheckoutState = { values: defaults, fieldErrors: {}, message: null };
+export default function CheckoutForm({ defaults, requiresBirthDate, signedIn }: Props) {
+  const initialState: CheckoutState = {
+    values: defaults,
+    fieldErrors: {},
+    message: null,
+    saveDetails: true,
+  };
   const [state, formAction, pending] = useActionState(placeOrder, initialState);
   const { values, fieldErrors } = state;
 
@@ -97,30 +38,7 @@ export default function CheckoutForm({ defaults, requiresBirthDate }: Props) {
         autoComplete="address-level2" maxLength={60} required />
 
       <div className="fieldRow">
-        <div className="field">
-          <label htmlFor="state">State</label>
-          <select
-            id="state"
-            name="state"
-            defaultValue={values.state}
-            autoComplete="address-level1"
-            required
-            aria-invalid={fieldErrors.state ? true : undefined}
-            aria-describedby={fieldErrors.state ? "state-error" : undefined}
-          >
-            <option value="">Choose…</option>
-            {US_STATES.map((s) => (
-              <option key={s.code} value={s.code}>
-                {s.name}
-              </option>
-            ))}
-          </select>
-          {fieldErrors.state && (
-            <p className="fieldError" id="state-error">
-              {fieldErrors.state}
-            </p>
-          )}
-        </div>
+        <StateSelect defaultValue={values.state} error={fieldErrors.state} required />
         <Field name="zip" label="ZIP code" defaultValue={values.zip} error={fieldErrors.zip}
           autoComplete="postal-code" inputMode="numeric" maxLength={10} required />
       </div>
@@ -141,13 +59,25 @@ export default function CheckoutForm({ defaults, requiresBirthDate }: Props) {
         </>
       )}
 
+      {signedIn && (
+        <div className="checkboxField">
+          <input
+            id="saveDetails"
+            name="saveDetails"
+            type="checkbox"
+            defaultChecked={state.saveDetails}
+          />
+          <label htmlFor="saveDetails">Save these details to my account</label>
+        </div>
+      )}
+
       {state.message && (
         <p className="formMessage" role="alert">
           {state.message}
         </p>
       )}
 
-      <button type="submit" className="placeOrderButton" disabled={pending}>
+      <button type="submit" className="formButton" disabled={pending}>
         {pending ? "Placing order…" : "Place order"}
       </button>
       <p className="fieldHint">

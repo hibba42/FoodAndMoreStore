@@ -1,0 +1,29 @@
+.accountPage {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 32px 24px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.accountPage h2 {
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+.accountPage section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.accountIntro {
+  max-width: 60ch;
+}
+
+.accountForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

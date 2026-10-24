@@ -1,7 +1,94 @@
-import { pgTable, unique, integer, varchar, index, foreignKey, check, text, numeric, boolean, char, date, uuid, timestamp } from "drizzle-orm/pg-core"
+import { pgTable, unique, text, boolean, timestamp, index, foreignKey, uniqueIndex, check, integer, varchar, char, date, numeric, uuid } from "drizzle-orm/pg-core"
 import { sql } from "drizzle-orm"
 
 
+
+export const user = pgTable("user", {
+	id: text().primaryKey().notNull(),
+	name: text().notNull(),
+	email: text().notNull(),
+	emailVerified: boolean("email_verified").default(false).notNull(),
+	image: text(),
+	createdAt: timestamp("created_at", { mode: 'string' }).defaultNow().notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().notNull(),
+}, (table) => [
+	unique("user_email_key").on(table.email),
+]);
+
+export const session = pgTable("session", {
+	id: text().primaryKey().notNull(),
+	expiresAt: timestamp("expires_at", { mode: 'string' }).notNull(),
+	token: text().notNull(),
+	createdAt: timestamp("created_at", { mode: 'string' }).defaultNow().notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().notNull(),
+	ipAddress: text("ip_address"),
+	userAgent: text("user_agent"),
+	userId: text("user_id").notNull(),
+}, (table) => [
+	index("session_userId_idx").using("btree", table.userId.asc().nullsLast().op("text_ops")),
+	foreignKey({
+			columns: [table.userId],
+			foreignColumns: [user.id],
+			name: "session_user_id_fkey"
+		}).onDelete("cascade"),
+	unique("session_token_key").on(table.token),
+]);
+
+export const account = pgTable("account", {
+	id: text().primaryKey().notNull(),
+	accountId: text("account_id").notNull(),
+	providerId: text("provider_id").notNull(),
+	userId: text("user_id").notNull(),
+	accessToken: text("access_token"),
+	refreshToken: text("refresh_token"),
+	idToken: text("id_token"),
+	accessTokenExpiresAt: timestamp("access_token_expires_at", { mode: 'string' }),
+	refreshTokenExpiresAt: timestamp("refresh_token_expires_at", { mode: 'string' }),
+	scope: text(),
+	password: text(),
+	createdAt: timestamp("created_at", { mode: 'string' }).defaultNow().notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().notNull(),
+}, (table) => [
+	index("account_userId_idx").using("btree", table.userId.asc().nullsLast().op("text_ops")),
+	foreignKey({
+			columns: [table.userId],
+			foreignColumns: [user.id],
+			name: "account_user_id_fkey"
+		}).onDelete("cascade"),
+]);
+
+export const verification = pgTable("verification", {
+	id: text().primaryKey().notNull(),
+	identifier: text().notNull(),
+	value: text().notNull(),
+	expiresAt: timestamp("expires_at", { mode: 'string' }).notNull(),
+	createdAt: timestamp("created_at", { mode: 'string' }).defaultNow().notNull(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().notNull(),
+}, (table) => [
+	index("verification_identifier_idx").using("btree", table.identifier.asc().nullsLast().op("text_ops")),
+]);
+
+export const customers = pgTable("customers", {
+	customerId: integer("customer_id").primaryKey().generatedAlwaysAsIdentity({ name: "customers_customer_id_seq", startWith: 1, increment: 1, minValue: 1, maxValue: 2147483647, cache: 1 }),
+	name: varchar({ length: 100 }).notNull(),
+	address: varchar({ length: 150 }),
+	city: varchar({ length: 60 }),
+	state: char({ length: 2 }),
+	zip: varchar({ length: 10 }),
+	dateOfBirth: date("date_of_birth"),
+	email: varchar({ length: 100 }).notNull(),
+	phone: varchar({ length: 15 }),
+	authUserId: text("auth_user_id"),
+}, (table) => [
+	uniqueIndex("customers_guest_email_key").using("btree", table.email.asc().nullsLast().op("text_ops")).where(sql`(auth_user_id IS NULL)`),
+	foreignKey({
+			columns: [table.authUserId],
+			foreignColumns: [user.id],
+			name: "customers_auth_user_id_fkey"
+		}).onDelete("set null"),
+	unique("customers_auth_user_id_key").on(table.authUserId),
+	check("customers_date_of_birth_check", sql`date_of_birth <= CURRENT_DATE`),
+]);
 
 export const categories = pgTable("categories", {
 	categoryId: integer("category_id").primaryKey().generatedAlwaysAsIdentity({ name: "categories_category_id_seq", startWith: 1, increment: 1, minValue: 1, maxValue: 2147483647, cache: 1 }),
@@ -27,21 +114,6 @@ export const products = pgTable("products", {
 			name: "products_category_id_fkey"
 		}),
 	check("products_price_check", sql`price >= (0)::numeric`),
-]);
-
-export const customers = pgTable("customers", {
-	customerId: integer("customer_id").primaryKey().generatedAlwaysAsIdentity({ name: "customers_customer_id_seq", startWith: 1, increment: 1, minValue: 1, maxValue: 2147483647, cache: 1 }),
-	name: varchar({ length: 100 }).notNull(),
-	address: varchar({ length: 150 }),
-	city: varchar({ length: 60 }),
-	state: char({ length: 2 }),
-	zip: varchar({ length: 10 }),
-	dateOfBirth: date("date_of_birth"),
-	email: varchar({ length: 100 }).notNull(),
-	phone: varchar({ length: 15 }),
-}, (table) => [
-	unique("customers_email_key").on(table.email),
-	check("customers_date_of_birth_check", sql`date_of_birth <= CURRENT_DATE`),
 ]);
 
 export const orders = pgTable("orders", {

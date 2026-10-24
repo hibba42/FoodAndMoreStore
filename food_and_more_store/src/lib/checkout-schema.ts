@@ -38,3 +38,28 @@ export const checkoutSchema = z.object({
     .trim()
     .regex(/^\d{5}(-\d{4})?$/, "Enter a ZIP code like 97201 or 97201-1234."),
 });
+
+// ---------------------------------------------------------------
+// The account page: same fields, but only the name is required.
+// ---------------------------------------------------------------
+const optionalText = (label: string, max: number) =>
+  z.string().trim().max(max, `${label} must be ${max} characters or fewer.`);
+
+export const profileSchema = z.object({
+  name: text("Name", 100),
+  phone: checkoutSchema.shape.phone,
+  address: optionalText("Street address", 150),
+  city: optionalText("City", 60),
+  state: z
+    .string()
+    .trim()
+    .toUpperCase()
+    .refine((v) => v === "" || STATE_CODES.includes(v), "Choose a state."),
+  zip: z
+    .string()
+    .trim()
+    .refine(
+      (v) => v === "" || /^\d{5}(-\d{4})?$/.test(v),
+      "Enter a ZIP code like 97201 or 97201-1234."
+    ),
+});

@@ -7,11 +7,10 @@ import ProductImage from "../../product-image";
 import AddToCart from "./add-to-cart";
 import "./product.css";
 
-type Props = { params: Promise<{ id: string }> };
-
-
 // Reads from the database, so render on each request (not at build time).
 export const dynamic = "force-dynamic";
+
+type Props = { params: Promise<{ id: string }> };
 
 // Only accept plain positive whole numbers that fit in a Postgres INTEGER
 // (up to 9 digits), so junk like "abc" or "99999999999" becomes a clean 404

@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { toDateInputValue } from "@/lib/birth-date";
 import { readCart } from "@/lib/cart";
-import { EMPTY_VALUES } from "@/lib/checkout-types";
+import { EMPTY_VALUES, type CheckoutValues } from "@/lib/checkout-types";
+import { getCustomerByAuthUserId } from "@/lib/db/customers";
 import { getProductsByIds } from "@/lib/db/products";
 import { formatPrice, lineTotal } from "@/lib/format";
+import { getSession } from "@/lib/session";
 import ProductImage from "../product-image";
 import CheckoutForm from "./checkout-form";
 import "./checkout.css";
@@ -51,6 +54,23 @@ export default async function CheckoutPage() {
     );
   }
 
+  // Signed-in members get the form prefilled from their saved details (found by
+  // account ID, never by a typed email). Guests get a blank form.
+  const session = await getSession();
+  const customer = session ? await getCustomerByAuthUserId(session.user.id) : null;
+  const defaults: CheckoutValues = session
+    ? {
+        name: customer?.name ?? session.user.name,
+        email: session.user.email,
+        phone: customer?.phone ?? "",
+        address: customer?.address ?? "",
+        city: customer?.city ?? "",
+        state: customer?.state ?? "",
+        zip: customer?.zip ?? "",
+        dateOfBirth: toDateInputValue(customer?.dateOfBirth),
+      }
+    : EMPTY_VALUES;
+
   const requiresBirthDate = lines.some((l) => l.product.isAgeRestricted);
   const subtotalCents = lines.reduce(
     (sum, l) => sum + Math.round(Number(l.product.price) * 100) * l.quantity,
@@ -61,9 +81,33 @@ export default async function CheckoutPage() {
     <div className="checkoutPage">
       <h2>Checkout</h2>
 
+      {session ? (
+        <p>
+          Signed in as <strong>{session.user.email}</strong>.{" "}
+          <Link className="checkoutLink" href="/account">
+            Manage saved details
+          </Link>
+        </p>
+      ) : (
+        <p>
+          Checking out as a guest.{" "}
+          <Link className="checkoutLink" href="/sign-in?next=/checkout">
+            Sign in
+          </Link>{" "}
+          or{" "}
+          <Link className="checkoutLink" href="/sign-up?next=/checkout">
+            create an account
+          </Link>{" "}
+          to reuse your details next time.
+        </p>
+      )}
+
       <div className="checkoutLayout">
-        {/* Phase 2 (accounts) will pass a signed-in customer's saved details here. */}
-        <CheckoutForm defaults={EMPTY_VALUES} requiresBirthDate={requiresBirthDate} />
+        <CheckoutForm
+          defaults={defaults}
+          requiresBirthDate={requiresBirthDate}
+          signedIn={Boolean(session)}
+        />
 
         <aside className="orderSummary" aria-label="Order summary">
           <h3>Order summary</h3>
