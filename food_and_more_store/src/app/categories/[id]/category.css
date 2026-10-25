@@ -25,7 +25,7 @@
   gap: 8px 16px;
 }
 
-.categoryTitle h2 {
+.categoryTitle h1 {
   font-size: 2rem;
   line-height: 1.2;
 }
@@ -67,4 +67,10 @@
   outline: 3px solid var(--foreground);
   outline-offset: 3px;
   border-radius: 4px;
+}
+
+/* The not-found page's heading sits directly inside .categoryPage. */
+.categoryPage > h1 {
+  font-size: 2rem;
+  line-height: 1.2;
 }

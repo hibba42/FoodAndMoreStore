@@ -49,7 +49,7 @@ export default async function CategoryPage(props: Props) {
       </nav>
 
       <div className="categoryTitle">
-        <h2>{category.name}</h2>
+        <h1>{category.name}</h1>
         <p>
           {items.length} {items.length === 1 ? "item" : "items"}
         </p>

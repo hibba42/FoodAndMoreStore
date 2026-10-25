@@ -23,7 +23,7 @@ export default function CheckoutForm({ defaults, requiresBirthDate, signedIn }: 
 
   return (
     <form action={formAction} className="checkoutForm">
-      <h3>Contact</h3>
+      <h2>Contact</h2>
       <Field name="name" label="Full name" defaultValue={values.name} error={fieldErrors.name}
         autoComplete="name" maxLength={100} required />
       <Field name="email" label="Email" type="email" defaultValue={values.email} error={fieldErrors.email}
@@ -31,7 +31,7 @@ export default function CheckoutForm({ defaults, requiresBirthDate, signedIn }: 
       <Field name="phone" label="Phone" type="tel" defaultValue={values.phone} error={fieldErrors.phone}
         autoComplete="tel" inputMode="tel" maxLength={20} />
 
-      <h3>Shipping address</h3>
+      <h2>Shipping address</h2>
       <Field name="address" label="Street address" defaultValue={values.address} error={fieldErrors.address}
         autoComplete="street-address" maxLength={150} required />
       <Field name="city" label="City" defaultValue={values.city} error={fieldErrors.city}
@@ -45,7 +45,7 @@ export default function CheckoutForm({ defaults, requiresBirthDate, signedIn }: 
 
       {requiresBirthDate && (
         <>
-          <h3>Age verification</h3>
+          <h2>Age verification</h2>
           <Field
             name="dateOfBirth"
             label="Date of birth"

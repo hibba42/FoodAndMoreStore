@@ -30,7 +30,7 @@ export default async function AccountPage() {
 
   return (
     <div className="accountPage">
-      <h2>Your account</h2>
+      <h1>Your account</h1>
       <p>
         Signed in as <strong>{session.user.email}</strong>
       </p>
@@ -42,7 +42,7 @@ export default async function AccountPage() {
       </p>
 
       <section aria-labelledby="saved-details">
-        <h3 id="saved-details">Saved details</h3>
+        <h2 id="saved-details">Saved details</h2>
         <p className="accountIntro">
           These fill in the checkout form for you. You can still change them on any order.
         </p>

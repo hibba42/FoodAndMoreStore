@@ -19,7 +19,7 @@ export default async function SignInPage(props: Props) {
 
   return (
     <div className="authPage">
-      <h2>Sign in</h2>
+      <h1>Sign in</h1>
       <SignInForm next={next} />
     </div>
   );

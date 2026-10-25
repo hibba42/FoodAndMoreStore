@@ -4,7 +4,7 @@ import "./category.css";
 export default function CategoryNotFound() {
   return (
     <div className="categoryPage">
-      <h2>We couldn&apos;t find that category</h2>
+      <h1>We couldn&apos;t find that category</h1>
       <p>The link may be mistyped, or the category may no longer exist.</p>
       <p>
         <Link href="/" style={{ textDecoration: "underline", textUnderlineOffset: 3 }}>

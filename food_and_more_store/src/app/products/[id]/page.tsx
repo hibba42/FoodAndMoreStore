@@ -59,7 +59,7 @@ export default async function ProductPage(props: Props) {
         </div>
 
         <div className="productDetailInfo">
-          <h2>{product.name}</h2>
+          <h1>{product.name}</h1>
           <p className="productDetailPrice">{formatPrice(product.price)}</p>
           <p className="productDescription">
             {product.description ?? "No description available yet."}

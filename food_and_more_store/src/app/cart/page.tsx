@@ -29,7 +29,7 @@ export default async function CartPage() {
   if (lines.length === 0) {
     return (
       <div className="cartPage">
-        <h2>Your cart is empty</h2>
+        <h1>Your cart is empty</h1>
         {skipped > 0 && (
           <p className="cartNotice">
             Some items in your cart are no longer available.
@@ -53,7 +53,7 @@ export default async function CartPage() {
 
   return (
     <div className="cartPage">
-      <h2>Your cart</h2>
+      <h1>Your cart</h1>
 
       {skipped > 0 && (
         <p className="cartNotice">

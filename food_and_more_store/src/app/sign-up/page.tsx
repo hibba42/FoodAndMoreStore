@@ -18,7 +18,7 @@ export default async function SignUpPage(props: Props) {
 
   return (
     <div className="authPage">
-      <h2>Create an account</h2>
+      <h1>Create an account</h1>
       <SignUpForm next={next} />
     </div>
   );

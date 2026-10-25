@@ -29,7 +29,7 @@ export default async function CheckoutPage() {
   if (lines.length === 0) {
     return (
       <div className="checkoutPage">
-        <h2>Checkout</h2>
+        <h1>Checkout</h1>
         <p>Your cart is empty.</p>
         <p>
           <Link className="checkoutLink" href="/">
@@ -43,7 +43,7 @@ export default async function CheckoutPage() {
   if (lines.length !== ids.length) {
     return (
       <div className="checkoutPage">
-        <h2>Checkout</h2>
+        <h1>Checkout</h1>
         <p className="formMessage">Some items in your cart are no longer available.</p>
         <p>
           <Link className="checkoutLink" href="/cart">
@@ -79,7 +79,7 @@ export default async function CheckoutPage() {
 
   return (
     <div className="checkoutPage">
-      <h2>Checkout</h2>
+      <h1>Checkout</h1>
 
       {session ? (
         <p>
@@ -110,7 +110,7 @@ export default async function CheckoutPage() {
         />
 
         <aside className="orderSummary" aria-label="Order summary">
-          <h3>Order summary</h3>
+          <h2>Order summary</h2>
           <ul>
             {lines.map(({ product, quantity }) => (
               <li key={product.id}>

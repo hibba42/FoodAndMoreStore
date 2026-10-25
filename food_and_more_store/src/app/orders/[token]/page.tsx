@@ -31,7 +31,7 @@ export default async function OrderPage(props: Props) {
 
   return (
     <div className="orderPage">
-      <h2>Thank you for your order!</h2>
+      <h1>Thank you for your order!</h1>
       <p>
         Order <strong>#{order.id}</strong> · placed <LocalDateTime iso={order.placedAtIso} /> ·
         status: {order.status}
@@ -57,7 +57,7 @@ export default async function OrderPage(props: Props) {
       </p>
 
       <section className="orderDetails" aria-label="Delivery details">
-        <h3>Shipping to</h3>
+        <h2>Shipping to</h2>
         <p>
           {order.recipientName}
           <br />

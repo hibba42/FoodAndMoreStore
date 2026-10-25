@@ -9,9 +9,11 @@ signed-in customer, that is saved to PostgreSQL. Everything runs with one `docke
 | Feature | State |
 |---|---|
 | Product catalog (categories, details pages, images) | Done |
+| Home page category previews and full category pages (`/categories/[id]`) | Done |
 | Cookie-based shopping cart (no account needed) | Done |
 | Guest checkout (validated form, transactional order save) | Done |
 | Order confirmation page with unguessable link | Done |
+| Order history for signed-in customers (`/orders`) | Done |
 | Customer accounts (Better Auth), account page, saved-details prefill at checkout | Done |
 | Payments | Planned (checkout currently records the order only) |
 | Real product photos | Planned (illustrations are used for now) |
@@ -57,6 +59,9 @@ and only Server Components and Server Actions import them.
   since anyone can type any email address into a guest form.
 - **Checkout is prefilled only from the signed-in session**, never from a typed
   email address, so one person can't view another's saved details.
+- **Every new account gets a `customers` row immediately** (via a Better Auth
+  database hook), so support can look a customer up by email even if their first
+  checkout fails. Checkout still creates the row if it is somehow missing.
 - **Accounts link to customers by account ID.** Email is unique only among guest
   customers, so a member and an earlier guest can share an address without
   being merged (merging needs verified emails, which is on the roadmap).
@@ -156,7 +161,7 @@ with pull output.
 ```
 db/init/                SQL that creates and seeds the database
 public/images/          product images
-src/app/                routes: home, products/[id], cart, checkout, orders/[token],
+src/app/                routes: home, categories/[id], products/[id], cart, checkout, orders, orders/[token],
                         sign-in, sign-up, account, api/auth
 src/lib/                cart, checkout actions, validation, formatting
 src/lib/db/             Drizzle schema and queries
@@ -186,10 +191,6 @@ drizzle.config.ts       used by drizzle-kit
 
 ## Roadmap
 
-1. Email verification and password reset (needs an outgoing mail server), then
-   attaching earlier guest orders to a verified account
-2. Order history for signed-in customers
-3. Payment integration
-4. Real product photography
-5. Category pages and search
-6. Possibly requiring an account at checkout (guest checkout is optional today)
+1. Realistic product photography
+2. Search and sorting
+3. Possibly requiring an account at checkout (guest checkout is optional today)

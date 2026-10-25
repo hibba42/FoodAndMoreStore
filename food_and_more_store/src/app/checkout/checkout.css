@@ -9,7 +9,7 @@
   gap: 24px;
 }
 
-.checkoutPage h2 {
+.checkoutPage h1 {
   font-size: 2rem;
   line-height: 1.2;
 }
@@ -27,8 +27,12 @@
   gap: 16px;
 }
 
-.checkoutForm h3 {
+.checkoutForm h2 {
   margin-top: 8px;
+  font-size: 1.2rem;
+}
+
+.orderSummary h2 {
   font-size: 1.2rem;
 }
 

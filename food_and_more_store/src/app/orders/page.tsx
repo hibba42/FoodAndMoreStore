@@ -23,7 +23,7 @@ export default async function OrdersPage() {
 
   return (
     <div className="ordersPage">
-      <h2>Your orders</h2>
+      <h1>Your orders</h1>
 
       {orders.length === 0 ? (
         <>
