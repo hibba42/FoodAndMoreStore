@@ -81,7 +81,8 @@ export default function CheckoutForm({ defaults, requiresBirthDate, signedIn }: 
         {pending ? "Placing order…" : "Place order"}
       </button>
       <p className="fieldHint">
-        Payment isn&apos;t connected yet. Placing an order records it, and nothing is charged.
+        This is a demo store: no payment is taken and nothing is shipped, so please use
+        made-up contact details.
       </p>
     </form>
   );

@@ -1,26 +1,37 @@
 # Food & More Store
 
 A grocery storefront built as a full-stack portfolio project: browse products,
-view details, fill a cookie-based cart, and place a guest order that is saved
-to PostgreSQL. Everything runs with one `docker compose up`.
+view details, fill a cookie-based cart, and place an order, as a guest or as a
+signed-in customer, that is saved to PostgreSQL. Everything runs with one `docker compose up`.
 
 ## Status
 
 | Feature | State |
 |---|---|
 | Product catalog (categories, details pages, images) | Done |
+| Home page category previews and full category pages (`/categories/[id]`) | Done |
 | Cookie-based shopping cart (no account needed) | Done |
 | Guest checkout (validated form, transactional order save) | Done |
 | Order confirmation page with unguessable link | Done |
-| Customer accounts and saved-details prefill | Planned |
-| Payments | Planned (checkout currently records the order only) |
+| Order history for signed-in customers (`/orders`) | Done |
+| Customer accounts (Better Auth), account page, saved-details prefill at checkout | Done |
+| Payments | Intentionally out of scope (see Scope below) |
 | Real product photos | Planned (illustrations are used for now) |
+
+## Scope
+
+This is a portfolio demo, not a live store. **Payments are intentionally left
+out:** checkout records the order and nothing is charged, so no payment details
+are ever requested, collected, or stored. Nothing is shipped either. The site
+does store the names, addresses, and similar details entered at checkout or on
+the account page, so use made-up details when trying it out.
 
 ## Tech stack
 
 - **Next.js 16** (App Router, Server Components, Server Actions) and **React**
 - **TypeScript**
 - **PostgreSQL 17** with **Drizzle ORM** (`pg` driver)
+- **Better Auth** for accounts and sessions (email and password)
 - **Zod** for server-side form validation
 - **Docker Compose** (web + database containers)
 
@@ -54,6 +65,14 @@ and only Server Components and Server Actions import them.
   line are written together or not at all.
 - **Guest checkout never overwrites an existing customer's saved details**,
   since anyone can type any email address into a guest form.
+- **Checkout is prefilled only from the signed-in session**, never from a typed
+  email address, so one person can't view another's saved details.
+- **Every new account gets a `customers` row immediately** (via a Better Auth
+  database hook), so support can look a customer up by email even if their first
+  checkout fails. Checkout still creates the row if it is somehow missing.
+- **Accounts link to customers by account ID.** Email is unique only among guest
+  customers, so a member and an earlier guest can share an address without
+  being merged (merging needs verified emails, which is on the roadmap).
 - **Order confirmation pages use a random UUID**, not the sequential order ID,
   so orders can't be found by guessing numbers.
 - **Server-side validation of everything**: form fields (Zod), cart contents,
@@ -111,17 +130,22 @@ Neither real file is committed (see `.gitignore`); only the `*.example` files ar
 
 | File | Used by | Contains |
 |---|---|---|
-| `.env` | Docker Compose | `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB` |
-| `.env.local` | `npm run dev`, `drizzle-kit` | `DATABASE_URL` (pointing at `localhost`) |
+| `.env` | Docker Compose | `POSTGRES_*` database settings, `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL` |
+| `.env.local` | `npm run dev`, `drizzle-kit` | `DATABASE_URL` (pointing at `localhost`), `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL` |
 
-Optional: set `COOKIE_SECURE=true` once the site is served over HTTPS.
+Generate a secret for `BETTER_AUTH_SECRET` with `openssl rand -base64 32`.
+
+Optional settings: `COOKIE_SECURE=true` once the site is served over HTTPS, and
+`BETTER_AUTH_TRUSTED_ORIGINS` (comma-separated) if you open the site from an
+address other than `BETTER_AUTH_URL`, such as a LAN IP.
 
 ## Database
 
 The schema lives in `db/init/`. Postgres runs these files **once**, when the
 data volume is first created, in filename order:
 
-- `01-schema.sql`: tables, constraints, and indexes
+- `00-auth-schema.sql`: Better Auth's tables (user, session, account, verification)
+- `01-schema.sql`: the store's tables, constraints, and indexes
 - `02-sample-data.sql`, `03-sample-data-extra.sql`: sample categories and products
 
 To change the schema while there is only sample data, edit `01-schema.sql` and
@@ -135,12 +159,18 @@ npx drizzle-kit pull
 # then move drizzle/schema.ts and drizzle/relations.ts into src/lib/db/
 ```
 
+`src/lib/db/auth-schema.ts` is the exception: it holds Better Auth's tables
+exactly as Better Auth's CLI generates them (Better Auth needs timestamps as
+`Date` objects, while `pull` describes them as strings). Don't overwrite it
+with pull output.
+
 ## Project structure
 
 ```
 db/init/                SQL that creates and seeds the database
 public/images/          product images
-src/app/                routes: home, products/[id], cart, checkout, orders/[token]
+src/app/                routes: home, categories/[id], products/[id], cart, checkout, orders, orders/[token],
+                        sign-in, sign-up, account, api/auth
 src/lib/                cart, checkout actions, validation, formatting
 src/lib/db/             Drizzle schema and queries
 Dockerfile              multi-stage build (standalone Next.js output)
@@ -156,6 +186,11 @@ drizzle.config.ts       used by drizzle-kit
 - **`drizzle-kit pull` or `npm run dev` can't connect to the database**
   The `db` service's `ports` line is still commented out, or the container
   isn't healthy yet (`docker compose ps`).
+- **`docker compose up` stops with "Set BETTER_AUTH_SECRET in .env"**
+  Add a value for `BETTER_AUTH_SECRET` to `.env` (see the table above).
+- **Sign-in fails with an "invalid origin" error**
+  The address in the browser doesn't match `BETTER_AUTH_URL`. Fix the URL, or
+  add the address to `BETTER_AUTH_TRUSTED_ORIGINS`.
 - **The init SQL changes don't show up**
   Init scripts only run on a brand-new volume. Run `docker compose down -v`
   and start again (this deletes the database contents).
@@ -164,7 +199,6 @@ drizzle.config.ts       used by drizzle-kit
 
 ## Roadmap
 
-1. Customer accounts (Better Auth) with the checkout form prefilled from saved details
-2. Payment integration
-3. Real product photography
-4. Category pages, search, and order history
+1. Realistic product photography
+2. Search and sorting
+3. Possibly requiring an account at checkout (guest checkout is optional today)

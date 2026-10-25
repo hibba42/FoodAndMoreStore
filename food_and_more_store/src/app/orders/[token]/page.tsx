@@ -70,8 +70,8 @@ export default async function OrderPage(props: Props) {
       </section>
 
       <p className="orderNotice">
-        Payment isn&apos;t connected yet, so nothing was charged. Keep this page&apos;s link:
-        without an account, it&apos;s the only way to view this order.
+        This is a demo store: no payment was taken and nothing will be shipped. Keep this
+        page&apos;s link: without an account, it&apos;s the only way to view this order.
       </p>
 
       <p>
