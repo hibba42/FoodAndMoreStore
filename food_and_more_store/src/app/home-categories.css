@@ -15,6 +15,16 @@
   }
 }
 
+/* The slogan under the welcome heading: larger, in a script font
+   (the font itself is applied by the sloganFont class in page.tsx). */
+.greeting .slogan {
+  margin-top: 4px;
+  font-size: 2.65rem;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+}
+
 /* Each category sits on its own soft, rounded card. */
 .homeMain .categorySection {
   padding: 20px 24px 24px;

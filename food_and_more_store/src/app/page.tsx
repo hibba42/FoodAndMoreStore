@@ -1,3 +1,4 @@
+import { Birthstone } from "next/font/google";
 import Link from "next/link";
 import "./home.css";
 import "./home-categories.css";
@@ -12,6 +13,13 @@ export const dynamic = "force-dynamic";
 // How many products to preview in each category on the home page.
 const HOME_SAMPLE_SIZE = 3;
 
+// A flowing script font for the slogan. next/font downloads it at build time and
+// serves it from this site, so visitors' browsers never contact Google.
+const sloganFont = Birthstone({
+  subsets: ["latin"],
+  weight: "400"
+});
+
 export default async function Home() {
   const [topProducts, categories] = await Promise.all([
     getTopProducts(4),
@@ -21,8 +29,8 @@ export default async function Home() {
   return (
     <div className="homeMain">
       <section className="greeting">
-        <h3>Welcome to our store!</h3>
-        <p>Fresh groceries, delivered with care.</p>
+        <h1 style={{ textAlign: "center" }}>Welcome to Food &amp; More Store!</h1>
+        <p className={`slogan ${sloganFont.className}`}>Fresh groceries, delivered with care.</p>
       </section>
 
       <section className="categorySection">

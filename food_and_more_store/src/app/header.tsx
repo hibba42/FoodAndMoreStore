@@ -33,7 +33,6 @@ export default async function Header() {
           {count > 0 && <span className="cartCount">{count}</span>}
         </Link>
       </nav>
-      <h1 style={{ textAlign: "center" }}>Welcome to Food &amp; More Store!</h1>
     </header>
   );
 }
