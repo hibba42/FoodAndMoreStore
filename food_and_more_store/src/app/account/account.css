@@ -27,3 +27,13 @@
   flex-direction: column;
   gap: 16px;
 }
+
+.accountLink {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.accountPage a:focus-visible {
+  outline: 3px solid var(--foreground);
+  outline-offset: 2px;
+}

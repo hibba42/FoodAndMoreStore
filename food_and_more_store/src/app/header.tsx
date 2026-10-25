@@ -16,6 +16,7 @@ export default async function Header() {
 
         {session ? (
           <>
+            <Link href="/orders">Orders</Link>
             <Link href="/account">{session.user.name}</Link>
             <SignOutButton />
           </>

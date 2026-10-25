@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getOrderByToken } from "@/lib/db/orders";
 import { formatPrice, lineTotal } from "@/lib/format";
+import { getSession } from "@/lib/session";
+import LocalDateTime from "../../local-date-time";
 import ProductImage from "../../product-image";
 import "./order.css";
 
@@ -25,16 +27,14 @@ export default async function OrderPage(props: Props) {
     (sum, item) => sum + Math.round(Number(item.unitPrice) * 100) * item.quantity,
     0
   );
-  const placedOn = new Date(order.orderedAt).toLocaleDateString("en-US", {
-    dateStyle: "medium",
-    timeZone: "UTC",
-  });
+  const session = await getSession();
 
   return (
     <div className="orderPage">
       <h2>Thank you for your order!</h2>
       <p>
-        Order <strong>#{order.id}</strong> · placed {placedOn} · status: {order.status}
+        Order <strong>#{order.id}</strong> · placed <LocalDateTime iso={order.placedAtIso} /> ·
+        status: {order.status}
       </p>
 
       <ul className="orderItems">
@@ -78,6 +78,14 @@ export default async function OrderPage(props: Props) {
         <Link className="orderLink" href="/">
           Continue shopping
         </Link>
+        {session && (
+          <>
+            {" · "}
+            <Link className="orderLink" href="/orders">
+              View all your orders
+            </Link>
+          </>
+        )}
       </p>
     </div>
   );

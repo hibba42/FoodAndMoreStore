@@ -1,0 +1,56 @@
+.ordersPage {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 24px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.ordersPage h2 {
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+.ordersList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.ordersList li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 0;
+  border-top: 1px solid color-mix(in srgb, var(--foreground) 25%, transparent);
+}
+
+.ordersList li:last-child {
+  border-bottom: 1px solid color-mix(in srgb, var(--foreground) 25%, transparent);
+}
+
+.ordersLink {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.orderDate {
+  font-weight: 600;
+  font-size: 1.1rem;
+  align-self: flex-start;
+}
+
+.orderMeta {
+  font-size: 14px;
+}
+
+.ordersNote {
+  font-size: 14px;
+  max-width: 60ch;
+}
+
+.ordersPage a:focus-visible {
+  outline: 3px solid var(--foreground);
+  outline-offset: 2px;
+}

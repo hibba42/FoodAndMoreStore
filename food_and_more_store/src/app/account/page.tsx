@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { toDateInputValue } from "@/lib/birth-date";
 import type { ProfileValues } from "@/lib/checkout-types";
@@ -32,6 +33,12 @@ export default async function AccountPage() {
       <h2>Your account</h2>
       <p>
         Signed in as <strong>{session.user.email}</strong>
+      </p>
+
+      <p>
+        <Link className="accountLink" href="/orders">
+          View your order history
+        </Link>
       </p>
 
       <section aria-labelledby="saved-details">
