@@ -1,0 +1,44 @@
+/* Category headings and "See all" links on the home page. */
+
+.categoryHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-bottom: 8px;
+}
+
+.categoryTitleLink,
+.seeAll {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.seeAll {
+  font-weight: 600;
+}
+
+.categoryTitleLink:hover,
+.seeAll:hover {
+  text-decoration-thickness: 2px;
+}
+
+.categoryHeader a:focus-visible,
+.productCard:focus-visible {
+  outline: 3px solid var(--foreground);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

@@ -1,0 +1,70 @@
+/* Category page. Uses the site's --background / --foreground colors. */
+
+.categoryPage {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 32px 24px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.categoryPage .breadcrumb {
+  font-size: 14px;
+}
+
+.categoryPage .breadcrumb a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.categoryTitle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 16px;
+}
+
+.categoryTitle h2 {
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+.categoryNav ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.categoryNav a {
+  display: inline-block;
+  padding: 6px 14px;
+  border: 2px solid var(--foreground);
+  border-radius: 999px;
+  font-size: 14px;
+}
+
+.categoryNav a:hover {
+  background: color-mix(in srgb, var(--foreground) 12%, transparent);
+}
+
+/* The current category: filled, and not only different by color. */
+.categoryNav a[aria-current="page"] {
+  color: var(--background);
+  background: var(--foreground);
+  font-weight: 700;
+}
+
+.categoryProducts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px 20px;
+  font-size: larger;
+}
+
+.categoryPage a:focus-visible {
+  outline: 3px solid var(--foreground);
+  outline-offset: 3px;
+  border-radius: 4px;
+}

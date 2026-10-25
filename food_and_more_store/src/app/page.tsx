@@ -1,18 +1,21 @@
 import Link from "next/link";
 import "./home.css";
-import ProductImage from "./product-image";
+import "./home-categories.css";
+import ProductCard from "./product-card";
 import { getProductsByCategory, getTopProducts } from "@/lib/db/products";
-import { formatPrice } from "@/lib/format";
 
 // This page reads from the database, so render it on each request.
 // (Without this, `next build` inside Docker would try to query a database
 // that isn't reachable during the image build.)
 export const dynamic = "force-dynamic";
 
+// How many products to preview in each category on the home page.
+const HOME_SAMPLE_SIZE = 3;
+
 export default async function Home() {
   const [topProducts, categories] = await Promise.all([
     getTopProducts(4),
-    getProductsByCategory(),
+    getProductsByCategory(HOME_SAMPLE_SIZE),
   ]);
 
   return (
@@ -26,15 +29,7 @@ export default async function Home() {
         <h2>Top Products!</h2>
         <div className="topProducts">
           {topProducts.map((product) => (
-            <Link
-              className="productCard"
-              href={`/products/${product.id}`}
-              key={product.id}
-            >
-              <ProductImage src={product.imagePath} alt={product.name} />
-              <span className="productTitle">{product.name}</span>
-              <span className="productPrice">{formatPrice(product.price)}</span>
-            </Link>
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
       </section>
@@ -43,18 +38,21 @@ export default async function Home() {
         <h2>Shop by Category</h2>
         {categories.map((category) => (
           <div className="categorySection" key={category.id}>
-            <h3>{category.title}</h3>
+            <div className="categoryHeader">
+              <h3>
+                <Link className="categoryTitleLink" href={`/categories/${category.id}`}>
+                  {category.title}
+                </Link>
+              </h3>
+              <Link className="seeAll" href={`/categories/${category.id}`}>
+                See all {category.total} {category.total === 1 ? "item" : "items"}
+                <span className="visuallyHidden"> in {category.title}</span>
+                <span aria-hidden="true"> →</span>
+              </Link>
+            </div>
             <div className="categoryItems">
               {category.items.map((item) => (
-                <Link
-                  className="productCard"
-                  href={`/products/${item.id}`}
-                  key={item.id}
-                >
-                  <ProductImage src={item.imagePath} alt={item.name} />
-                  <span className="productTitle">{item.name}</span>
-                  <span className="productPrice">{formatPrice(item.price)}</span>
-                </Link>
+                <ProductCard key={item.id} product={item} />
               ))}
             </div>
           </div>
