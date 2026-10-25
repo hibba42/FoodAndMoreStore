@@ -25,9 +25,9 @@ export default async function Home() {
         <p>Fresh groceries, delivered with care.</p>
       </section>
 
-      <section>
+      <section className="categorySection">
         <h2>Top Products!</h2>
-        <div className="topProducts">
+        <div className="topProducts categoryItems">
           {topProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}

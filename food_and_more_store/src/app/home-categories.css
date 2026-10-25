@@ -1,12 +1,51 @@
-/* Category headings and "See all" links on the home page. */
+/* Category cards, headings, and "See all" links on the home page.
+   Selectors start with .homeMain so they reliably win over home.css. */
 
-.categoryHeader {
+:root {
+  --card-bg: rgba(255, 255, 255, 0.75);
+  --card-border: rgba(74, 55, 40, 0.1);
+  --card-shadow: 0 1px 4px rgba(74, 55, 40, 0.12);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --card-bg: rgba(255, 255, 255, 0.06);
+    --card-border: rgba(255, 255, 255, 0.14);
+    --card-shadow: none;
+  }
+}
+
+/* Each category sits on its own soft, rounded card. */
+.homeMain .categorySection {
+  padding: 20px 24px 24px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  box-shadow: var(--card-shadow);
+}
+
+/* Space between one category card and the next. */
+.homeMain .categorySection + .categorySection {
+  margin-top: 20px;
+}
+
+/* Space between the products inside a card: 28px between rows, 24px between columns. */
+.homeMain .categoryItems {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px 24px;
+}
+
+/* Title on the left, "See all" right next to it.
+   To push the link further right instead, use:
+     justify-content: space-between;  padding-right: 48px;  */
+.homeMain .categoryHeader {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  justify-content: space-between;
-  gap: 8px 16px;
-  margin-bottom: 8px;
+  justify-content: flex-start;
+  gap: 8px 24px;
+  margin-bottom: 16px;
 }
 
 .categoryTitleLink,
@@ -41,4 +80,10 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+@media (max-width: 480px) {
+  .homeMain .categorySection {
+    padding: 16px;
+  }
 }
