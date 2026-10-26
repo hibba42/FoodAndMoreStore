@@ -2,25 +2,28 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { safeNextPath } from "@/lib/safe-redirect";
 import { getSession } from "@/lib/session";
-import { SignInForm } from "../auth-forms";
+import { SignUpForm } from "../auth-forms";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = { title: "Sign in | Food & More Store" };
+export const metadata: Metadata = { title: "Create an account | Food & More Store" };
 
 type Props = { searchParams: Promise<{ next?: string | string[] }> };
 
-export default async function SignInPage(props: Props) {
+export default async function SignUpPage(props: Props) {
   const { next: rawNext } = await props.searchParams;
   const next = safeNextPath(Array.isArray(rawNext) ? rawNext[0] : rawNext);
 
-  // Already signed in: nothing to do here.
   if (await getSession()) redirect(next);
 
   return (
     <div className="authPage">
-      <h1>Sign in</h1>
-      <SignInForm next={next} />
+      <h1>Create an account</h1>
+      <p className="authNotice">
+        This is a demo store. Please use a made-up name and a throwaway email address;
+        no real information is needed.
+      </p>
+      <SignUpForm next={next} />
     </div>
   );
 }
