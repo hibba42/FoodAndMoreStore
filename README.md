@@ -202,3 +202,19 @@ drizzle.config.ts       used by drizzle-kit
 1. Realistic product photography
 2. Search and sorting
 3. Possibly requiring an account at checkout (guest checkout is optional today)
+
+## Image Attributions
+- `Blackberries` <a href="https://commons.wikimedia.org/wiki/File:20160722-AMS-LSC-0005_(28446915891).jpg">U.S. Department of AgricultureLance Cheung/Multimedia PhotoJournalist/USDA/Lance Cheung</a>, Public domain, via Wikimedia Commons
+- `Carrots` <a href="https://commons.wikimedia.org/wiki/File:Carrots_at_Ljubljana_Central_Market.JPG">domdomegg</a>, <a href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0</a>, via Wikimedia Commons (scaled for web)
+- `Cheddar Cheese` <a href="https://commons.wikimedia.org/wiki/File:Mature_Cheddar_(Western_Cape)_-_2018-07-21_-_7972.jpg">Pierre-Selim Huard</a>, <a href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0</a>, via Wikimedia Commons (scaled for web)
+- `Dragonfruit` <a href="https://commons.wikimedia.org/wiki/File:Hylocereus_undatus_red_pitahaya.jpg">T.Voekler</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0">CC BY-SA 3.0</a>, via Wikimedia Commons (scaled for web)
+- `Free Range Eggs` <a href="https://commons.wikimedia.org/wiki/File:Free-range_eggs_-_Kozan.JPG">Zeynel Cebeci</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>, via Wikimedia Commons (scaled for web)
+- `Leeks` <a href="https://commons.wikimedia.org/wiki/File:Poireaux.jpg">Pauk</a>, Public domain, via Wikimedia Commons
+- `Matsutake Mushrooms` <a href="https://commons.wikimedia.org/wiki/File:Matsutake.jpg">Tomomarusan</a>, <a href="http://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>, via Wikimedia Commons (scaled for web)
+- `Organic Apples` <a href="https://commons.wikimedia.org/wiki/File:Royal_Gala_apples_(organic).jpg">Shillings1005</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>, via Wikimedia Commons (scaled for web)
+- `Raw Chicken` <a href="https://commons.wikimedia.org/wiki/File:Raw_chicken_slices.jpg">kakyusei</a>, CC0, via Wikimedia Commons
+- `Salmon Filet` <a href="https://commons.wikimedia.org/wiki/File:Peppered_Salmon_for_Dinner.jpg">Gwen</a>, <a href="https://creativecommons.org/licenses/by/2.0">CC BY 2.0</a>, via Wikimedia Commons (scaled for web)
+- `Starfruit` <a href="https://commons.wikimedia.org/wiki/File:Star_fruit_(Averrhoa_carambola).jpg">Salil Kumar Mukherjee</a>, CC0, via Wikimedia Commons
+- `Tofu` <a href="https://commons.wikimedia.org/wiki/File:Tofu_4.jpg">fireworks</a>, CC0, via Wikimedia Commons
+- `Tomatoes` <a href="https://commons.wikimedia.org/wiki/File:Tomato_je.jpg">Softeis</a>, <a href="http://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>, via Wikimedia Commons (scaled for web)
+- `Whole Wheat Bread` <a href="https://commons.wikimedia.org/wiki/File:Vegan_no-knead_whole_wheat_bread_loaf,_September_2010.jpg">Veganbaking.net</a>, <a href="https://creativecommons.org/licenses/by-sa/2.0">CC BY-SA 2.0</a>, via Wikimedia Commons (scaled for web)
